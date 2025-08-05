@@ -8,7 +8,6 @@ RUN apk add --no-cache \
     libzip-dev \
     oniguruma-dev \
     sqlite-dev \
-    # Build tools (will be removed)
     zip \
     unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -23,6 +22,9 @@ RUN addgroup -g 1000 ipa_user && \
 
 # Set working directory
 WORKDIR /var/www
+
+# Create the database directory
+RUN mkdir -p /var/www/database
 
 # Copy composer files first (better caching)
 COPY composer.json composer.lock ./
@@ -41,11 +43,6 @@ RUN mkdir -p vendor
 
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
-
-
-# run migration
-# RUN php artisan migrate --force
-# RUN php artisan db:seed --force
 
 EXPOSE 8000
 

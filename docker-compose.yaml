@@ -1,5 +1,6 @@
+version: '3.8'
+
 services:
-    # PHP service container
     ipa_app:
         build:
             context: ./
@@ -12,6 +13,7 @@ services:
             - "8000:8000"
         volumes:
             - ./:/var/www
+            - ./database:/var/www/database  # Mount the database directory
         networks:
             - app_network
 
