@@ -50,4 +50,13 @@ RUN composer install --no-dev --optimize-autoloader
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Option 1: Run migrations as part of the CMD (recommended for external databases)
+# This ensures migrations run every time the container starts.
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
+
+# Option 2: Run migrations during the build process (uncomment if preferred)
+# This bakes the schema into the image. Use with caution for production.
+# RUN php artisan migrate --force
+
+# Original CMD (if you don't want migrations on startup)
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
