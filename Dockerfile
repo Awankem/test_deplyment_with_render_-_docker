@@ -26,6 +26,10 @@ WORKDIR /var/www
 # Create the database directory
 RUN mkdir -p /var/www/database
 
+# Set permissions for the database directory
+RUN chown -R ipa_user:ipa_user /var/www/database
+RUN chmod -R 775 /var/www/database  # Set the permissions
+
 # Copy composer files first (better caching)
 COPY composer.json composer.lock ./
 
